@@ -1,0 +1,7 @@
+#ifndef RESOURCE_RC_INCLUDED
+
+#define RESOURCE_RC_INCLUDED
+
+MAIN ICON "gameicon_icon.ico"
+
+#endif

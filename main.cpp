@@ -9,7 +9,6 @@
 #include <fstream>
 #include <ctime>
 #include <cstdlib>
-using namespace std;
 
 //Screen attributes
 const int SCREEN_WIDTH = 320;
@@ -29,15 +28,15 @@ SDL_Surface *menuMessage[menuTextAmount];
 SDL_Surface *message = NULL;
 SDL_Surface *messageFromOpponentDisplay = NULL;
 SDL_Surface *messageWinsAndLoses = NULL;
-string messageFromOpponent;
-string menuMessageText[] = {"Press START to Play Game"," Press Y to View Credits", "Made by Nathan Hurde[theweirdn8]","www.PawByte.com"};
+std::string messageFromOpponent;
+std::string menuMessageText[] = {"Press START to Play Game"," Press Y to View Credits", "Made by Nathan Hurde[theweirdn8]","www.PawByte.com"};
 SDL_Surface *screen = NULL;
 
 //The Game
 
 //External Game Variables
 const float gameVersion= 1.04;
-string gameCaptionTitle = "PawByte - Tic Tac Toe";
+std::string gameCaptionTitle = "PawByte - Tic Tac Toe";
 
 //Map/Room Variables
 int CURRENT_AREA = 0;
@@ -56,21 +55,22 @@ int BOARD_PXHEIGHT =1;
 //Credits alpha
 
 int creditsAlpha = SDL_ALPHA_OPAQUE;
-string creditsCaptions[]={"Game Created By","Game Designers ","Game Programmers ","GCW-Zero Porting Team","Game Art","Game Music ","Thanks for Playing "};
-int creditsMaxNumber[]={2,1,1,1,3,1,1};
-string creditsNames[7][3]={
-{
-"Nathan Hurde(theweirdn8)","PawByte.com",""},
-{"Nathan Hurde(theweirdn8)"," "," "},
-{"Nathan Hurde(theweirdn8)"," "," "},
-{"Zear"," "," "},
-{
-"Mathan Hurde(theweirdn8)",
-"jimn346 from nationofdesign.com",
+
+
+std::string creditsCaptions[]={"Game Created By","Game Designers ","Game Programmers ","Porting Team","Game Art","Game Music ","Thanks for Playing "};
+int creditsMaxNumber[]={2,1,1,2,4,3,3};
+std::string creditsNames[7][4]={
+{"Nathan Hurde(theweirdn8)","PawByte.com","",""},
+{"Nathan Hurde(theweirdn8)"," "," ",""},
+{"Nathan Hurde(theweirdn8)"," "," ",""},
+{"GCW-Zero Zear","RG 300 - JOCO_MKNZ (a.k.a Poligraf)"," ",""},
+
+{"jimn346 from nationofdesign.com",
 "Adzel from nationofdesign.com",
-},
-{"Kevin Macleod from incompetech.com"," "," "},
-{"You are Awesome!"," ",""}
+"Game Font - DroidSansMono",
+"Released under the Apache License"},
+{"Kevin Macleod from incompetech.com","Main Menu by Kevin Macleod","Credits Page by Kevin Macleod","Main Gameplay by Kevin Macleod"},
+{"You are Awesome!","Support Open Source!","Love Linux",""}
 };
 
 int creditsCaptionCounter=0;
@@ -115,32 +115,32 @@ TTF_Font *creditsFontTitle = NULL;
 SDL_Color textColor = { 0, 0, 0 };
 SDL_Color redColor = {255, 0, 0};
 SDL_Color whiteColor = {255, 255, 255};
+
 //The music that will be played
 Mix_Music *bgdMusic[3];
 
-//The sound effects that will be used
 
 
-ofstream myfile;
+std::ofstream myfile;
 
 //messages from the PC
 
-string opponentOpening[]={"Do not waste my time","Lets get this show on the road.","I wonder how I will beat you...",
+std::string opponentOpening[]={"Do not waste my time","Lets get this show on the road.","I wonder how I will beat you...",
 "Lets go!", "Lets have a clean fight.", "This should be fun." ,"Try to beat me!", "Prepare to Lose","Let's give the crowd a show","My mission is to win","My code shall not fail me!"};
 
-string opponentFirstMove[]={"There","YOLO!","Bring it on!","Feel the power!","9 squares, your blood, my code","Try to beat that","Ah, my 1st turn.","Time to start with a bang!","There you go.","Here we go..","I choose this one."};
+std::string opponentFirstMove[]={"There","YOLO!","Bring it on!","Feel the power!","9 squares, your blood, my code","Try to beat that","Ah, my 1st turn.","Time to start with a bang!","There you go.","Here we go..","I choose this one."};
 
-string opponentBlock[]={"Beep Boop!","Nice try ole' sport.","My defenses are stronger than your will!","So predictable.","My A.I detected that.","I'm not falling for that","Nice try!","Try harder next time","Wham!","Haha.","Naughty, naughty."};
+std::string opponentBlock[]={"Beep Boop!","Nice try ole' sport.","My defenses are stronger than your will!","So predictable.","My A.I detected that.","I'm not falling for that","Nice try!","Try harder next time","Wham!","Haha.","Naughty, naughty."};
 
-string opponentLose[]={"GG","I lost...", "Good job ole' sport!","Well played.","YOLO","A worthy opponent.","Good game.","Congratulations.","I let you win.","Come on, rematch!","Oh no!"};
+std::string opponentLose[]={"GG","I lost...", "Good job ole' sport!","Well played.","YOLO","A worthy opponent.","Good game.","Congratulations.","I let you win.","Come on, rematch!","Oh no!"};
 
-string opponentWin[]={"No autographs please.","Welcome to Bronze V Rank of TTT Players","Your best wasn't good enough","I win, as usual.","Good game.","Well played.","Rematch?","You were a good opponent.","GG","Well, that was fun.","I win!"};
+std::string opponentWin[]={"No autographs please.","Welcome to Bronze V Rank of TTT Players","Your best wasn't good enough","I win, as usual.","Good game.","Well played.","Rematch?","You were a good opponent.","GG","Well, that was fun.","I win!"};
 
-string opponentTieGame[]={"Rematch?","Jeepers, a tie!","What?! My legendary skills failed me.","I'm tired with this nerd?!","This is worst than losing.","Ha ha, you tied to horribly programmed A.I.","That was sick!","Good game.","Lets go again.","Well thats unusual.","Cool, us legends tied."};
+std::string opponentTieGame[]={"Rematch?","Jeepers, a tie!","What?! My legendary skills failed me.","I'm tired with this nerd?!","This is worst than losing.","Ha ha, you tied to horribly programmed A.I.","That was sick!","Good game.","Lets go again.","Well thats unusual.","Cool, us legends tied."};
 
 int oTextArraySize= 10;
 
-string winsandLosesText = "";
+std::string winsandLosesText = "";
 
 int random(int low,int high)
 {
@@ -149,17 +149,17 @@ int random(int low,int high)
 }
 
 
-string floattostring(float in)
+std::string floattostring(float in)
 {
-       ostringstream converter;
+       std::ostringstream converter;
        converter << in;
        return converter.str();
 }
 
 
-string inttostring(int in)
+std::string inttostring(int in)
 {
-       ostringstream converter;
+       std::ostringstream converter;
        converter << in;
        return converter.str();
 }
@@ -185,7 +185,7 @@ void updateCreditsNameText()
     SDL_SetAlpha( creditsNameDisplay, SDL_SRCALPHA, creditsAlpha );
 }
 
-void updateOpponentText(string textInput)
+void updateOpponentText(std::string textInput)
 {
     messageFromOpponent=textInput;
     messageFromOpponentDisplay = TTF_RenderText_Solid( font,messageFromOpponent.c_str(), whiteColor );
@@ -288,10 +288,10 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
 
 void drawRectangle(int x1, int y1, int x2, int y2, int color)
 {
-    int xx=min(x1,x2);
-    int yy=min(y1,y2);
-    int w=max(x1,x2)-xx;
-    int h=max(y1,y2)-yy;
+    int xx = std::min(x1,x2);
+    int yy = std::min(y1,y2);
+    int w = std::max(x1,x2)-xx;
+    int h = std::max(y1,y2)-yy;
     SDL_Rect rect = {xx,yy,w,h};
     SDL_FillRect(screen, &rect, color);
 }
@@ -306,7 +306,7 @@ bool init()
     }
 
     //Set up the screen
-    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE | SDL_RESIZABLE );
 
     //If there was an error in setting up the screen
     if( screen == NULL )
@@ -351,8 +351,8 @@ bool load_files()
     gameboard = load_image("resources/gfx/gameboard.png");
 
     //Open the font(s)
-    font = TTF_OpenFont( "resources/font/gamefont.ttf", 14 );
-    creditsFontTitle = TTF_OpenFont( "resources/font/gamefont.ttf", 18 );
+    font = TTF_OpenFont( "resources/font/DroidSansMono.ttf", 14 );
+    creditsFontTitle = TTF_OpenFont( "resources/font/DroidSansMono.ttf", 18 );
 
     //If there was a problem in loading the background
     if( background == NULL )
@@ -1164,23 +1164,9 @@ bool creditsLoop(bool quit)
             goToMenu();
         }
     }
+
     //Processing
-    /*
-    creditsECounter++;
-    if(creditsECounter>=creditsExtraLoopage)
-    {
-        creditsTimeCounter++;
-        creditsECounter=0;
-    }
-    creditsTimeCounter++;
-    if(creditsTimeCounter>=creditsTiming)
-    {
-        creditsECounter=0;
-        creditsAlpha-=5;
-        //creditsTimeCounter=0;
-    }
-    */
-    creditsAlpha-=2;
+    creditsAlpha -= 5;
     if(creditsAlpha<=0)
     {
         creditsECounter=0;
@@ -1193,9 +1179,15 @@ bool creditsLoop(bool quit)
         creditsCaptionCounter++;
         creditsNamesCounter=0;
     }
-    if(creditsCaptionCounter>=5)
+
+    if(creditsCaptionCounter>=7)
     {
+        creditsECounter=0;
+        creditsNamesCounter = 0;
+        creditsTimeCounter=0;
+        creditsAlpha = SDL_ALPHA_OPAQUE;
         goToMenu();
+        return false;
     }
 
     //drawing
